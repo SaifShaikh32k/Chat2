@@ -1,5 +1,3 @@
-// chat.js — Advanced Features Update
-
 let db, messaging;
 let currentUser  = null;
 let selectedUser = null;
@@ -43,6 +41,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     typingTimer = setTimeout(() => {
       db.ref(`typing/${activeChatId}/${currentUser.userId}`).set(false);
     }, 1500);
+  });
+
+  // Mobile UX: Back Button
+  document.getElementById('backBtn').addEventListener('click', () => {
+    document.body.classList.remove('chat-active');
+    activeChatId = null; 
+    selectedUser = null;
+    document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
   });
 
   document.getElementById('cancelReply').addEventListener('click', cancelReply);
@@ -129,9 +135,15 @@ function renderUsers(filter) {
 
 function openChat(user) {
   selectedUser = user;
+  
+  // Highlight active user
   document.querySelectorAll('.user-item').forEach(el =>
     el.classList.toggle('active', el.dataset.id === user.userId));
 
+  // Trigger Mobile Slide Animation
+  document.body.classList.add('chat-active');
+
+  // Show chat UI
   document.getElementById('chatPlaceholder').style.display = 'none';
   document.getElementById('chatArea').style.display = 'flex';
   document.getElementById('chatAvatar').textContent = ini(user.displayName);
@@ -151,7 +163,7 @@ function openChat(user) {
   // Clear unread count when opening
   db.ref(`unread/${currentUser.userId}/${user.userId}`).set(0);
 
-  // detach ALL previous listeners for messages and typing
+  // Detach ALL previous listeners for messages and typing
   db.ref('messages').off();
   db.ref('typing').off();
 
@@ -172,7 +184,8 @@ function openChat(user) {
     renderMessages(msgs);
   });
 
-  document.getElementById('messageInput').focus();
+  // Small delay on focus so the mobile keyboard doesn't pop up over the slide animation instantly
+  setTimeout(() => { document.getElementById('messageInput').focus(); }, 300);
 }
 
 function renderMessages(msgs) {
@@ -185,12 +198,14 @@ function renderMessages(msgs) {
     const isMine = msg.from === currentUser.userId;
     const time = new Date(msg.ts||Date.now()).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
     
-    // Feature: Read Receipts (Update if not mine and not seen)
+    // Feature: Read Receipts
     if (!isMine && msg.status !== 'seen') {
       db.ref(`messages/${activeChatId}/${msg.id}`).update({ status: 'seen' });
     }
 
     const div  = document.createElement('div');
+    // Ensure message div receives focus/active state on mobile for the popup menu
+    div.tabIndex = 0; 
     div.className = 'msg ' + (isMine ? 'sent' : 'recv') + (msg.isDeleted ? ' deleted' : '');
     
     let replyHtml = '';
@@ -209,7 +224,7 @@ function renderMessages(msgs) {
       statusTick = msg.status === 'seen' ? '<span class="msg-tick tick-seen">✓✓</span>' : '<span class="msg-tick tick-sent">✓</span>';
     }
 
-    // Actions Menu
+    // Actions Menu (Replies/Deletions)
     let actionsHtml = `<div class="msg-actions">`;
     if (!msg.isDeleted) {
       actionsHtml += `<button class="action-btn" onclick="reactToMsg('${msg.id}', '❤️')" title="Heart">❤️</button>
@@ -237,7 +252,6 @@ function renderMessages(msgs) {
   if (atBottom || msgs.length <= 5) w.scrollTop = w.scrollHeight;
 }
 
-// Features: Delete, Reply, React
 window.deleteMsg = function(msgId) {
   if (confirm("Delete this message for everyone?")) {
     db.ref(`messages/${activeChatId}/${msgId}`).update({ isDeleted: true });
@@ -278,7 +292,7 @@ async function sendMessage() {
     name: currentUser.displayName,
     text: text,
     ts:   Date.now(),
-    status: 'sent' // Read receipts tracking
+    status: 'sent' 
   };
 
   if (replyingToMsg) {
@@ -330,7 +344,7 @@ async function setupFCM() {
       const fromId = payload.data && payload.data.senderId;
       if (!selectedUser || selectedUser.userId !== fromId) {
         showBanner((payload.notification||{}).title||'New message', (payload.notification||{}).body||'', fromId);
-        playBeep(); // Plays sound + OS banner when message arrives off-screen
+        playBeep();
       }
     });
   } catch(e) {
