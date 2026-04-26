@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeamChat — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0b0e14;
+      --surface:     #131720;
+      --card:        #191e28;
+      --border:      #252c3b;
+      --accent:      #00d4aa;
+      --accent-glow: rgba(0,212,170,0.18);
+      --accent-dim:  rgba(0,212,170,0.08);
+      --text:        #e2eaf5;
+      --muted:       #6b7a94;
+      --red:         #f05a5a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Subtle grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,170,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,170,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+    }
+
+    /* Radial centre glow */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0,212,170,0.07) 0%, transparent 65%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 420px;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 44px 40px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+    }
+
+    /* ── Logo ── */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 36px;
+    }
+    .logo-mark {
+      width: 44px; height: 44px;
+      background: var(--accent);
+      color: #0b0e14;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      box-shadow: 0 6px 20px rgba(0,212,170,0.35);
+    }
+    .logo-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 30px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    /* ── Form ── */
+    .field { margin-bottom: 22px; }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      margin-bottom: 9px;
+    }
+    input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      padding: 13px 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    input::placeholder { color: var(--muted); opacity: 0.5; }
+
+    .error {
+      color: var(--red);
+      font-size: 13px;
+      min-height: 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn {
+      width: 100%;
+      background: var(--accent);
+      color: #0b0e14;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.3px;
+      padding: 14px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.12s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(0,212,170,0.3);
+    }
+    .btn:hover  { opacity: 0.92; box-shadow: 0 8px 28px rgba(0,212,170,0.4); }
+    .btn:active { transform: scale(0.985); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+    /* Spinner */
+    .btn.loading { position: relative; color: transparent; }
+    .btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(11,14,20,0.3);
+      border-top-color: #0b0e14;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+    /* Bottom note */
+    .note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 24px;
+    }
+    .note strong { color: var(--accent); font-weight: 500; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+
+    <div class="logo">
+      <div class="logo-mark">TC</div>
+      <span class="logo-text">TeamChat</span>
+    </div>
+
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in with your team credentials</p>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="userId">User ID</label>
+        <input id="userId" type="text" placeholder="e.g. john123" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Your password" autocomplete="current-password" required>
+      </div>
+      <div id="errorMsg" class="error"></div>
+      <button class="btn" type="submit" id="loginBtn">Sign In</button>
+    </form>
+
+    <p class="note">Access managed by your admin via <strong>Google Sheet</strong></p>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>
