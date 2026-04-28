@@ -5,192 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TeamChat — Sign In</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --bg:          #0b0e14;
-      --surface:     #131720;
-      --card:        #191e28;
-      --border:      #252c3b;
-      --accent:      #00d4aa;
-      --accent-glow: rgba(0,212,170,0.18);
-      --accent-dim:  rgba(0,212,170,0.08);
-      --text:        #e2eaf5;
-      --muted:       #6b7a94;
-      --red:         #f05a5a;
-    }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      background: #fafafa;
+      color: #262626;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-    }
-
-    /* Subtle grid */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,212,170,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,170,0.025) 1px, transparent 1px);
-      background-size: 44px 44px;
-      pointer-events: none;
-    }
-
-    /* Radial centre glow */
-    body::after {
-      content: '';
-      position: fixed;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(0,212,170,0.07) 0%, transparent 65%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
+      padding: 40px 16px;
     }
 
     .wrap {
       width: 100%;
-      max-width: 420px;
-      padding: 24px;
-      position: relative;
-      z-index: 1;
-      animation: fadeUp 0.5s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 44px 40px;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      border-radius: 1px;
+      padding: 40px 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     /* ── Logo ── */
     .logo {
       display: flex;
       align-items: center;
-      gap: 13px;
-      margin-bottom: 36px;
+      gap: 11px;
+      margin-bottom: 28px;
     }
     .logo-mark {
-      width: 44px; height: 44px;
-      background: var(--accent);
+      width: 40px; height: 40px;
+      background: #00d4aa;
       color: #0b0e14;
-      border-radius: 12px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 15px;
+      font-size: 14px;
       letter-spacing: 0.5px;
       flex-shrink: 0;
-      box-shadow: 0 6px 20px rgba(0,212,170,0.35);
     }
     .logo-text {
       font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 22px;
-      color: var(--text);
-    }
-
-    /* ── Headings ── */
-    h1 {
-      font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 30px;
-      line-height: 1.15;
-      margin-bottom: 8px;
-    }
-    .sub {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 36px;
-      font-weight: 300;
+      font-size: 26px;
+      color: #262626;
+      letter-spacing: -0.5px;
     }
 
-    /* ── Form ── */
-    .field { margin-bottom: 22px; }
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--muted);
-      margin-bottom: 9px;
-    }
-    input {
+    /* ── Inputs ── */
+    .field { width: 100%; margin-bottom: 6px; }
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      padding: 13px 16px;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fafafa;
+      border: 1px solid #dbdbdb;
+      border-radius: 3px;
+      color: #262626;
+      font-family: inherit;
+      font-size: 12px;
+      padding: 9px 8px;
       outline: none;
+      transition: border-color 0.15s;
       -webkit-appearance: none;
     }
-    input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-    input::placeholder { color: var(--muted); opacity: 0.5; }
+    input[type="text"]:focus,
+    input[type="password"]:focus { border-color: #a8a8a8; }
+    input::placeholder { color: #8e8e8e; }
 
-    .error {
-      color: var(--red);
-      font-size: 13px;
-      min-height: 18px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
+    /* ── Button ── */
     .btn {
       width: 100%;
-      background: var(--accent);
-      color: #0b0e14;
+      background: #0095f6;
+      color: #fff;
       border: none;
-      border-radius: 10px;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      letter-spacing: 0.3px;
-      padding: 14px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      padding: 8px;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.12s, box-shadow 0.2s;
-      box-shadow: 0 6px 20px rgba(0,212,170,0.3);
+      margin-top: 2px;
+      transition: opacity 0.2s;
     }
-    .btn:hover  { opacity: 0.92; box-shadow: 0 8px 28px rgba(0,212,170,0.4); }
-    .btn:active { transform: scale(0.985); }
-    .btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* Spinner */
     .btn.loading { position: relative; color: transparent; }
     .btn.loading::after {
       content: '';
       position: absolute;
-      width: 18px; height: 18px;
-      border: 2.5px solid rgba(11,14,20,0.3);
-      border-top-color: #0b0e14;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       top: 50%; left: 50%;
@@ -198,18 +122,89 @@
     }
     @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
 
-    /* Bottom note */
-    .note {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 24px;
+    /* ── OR divider ── */
+    .or-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      width: 100%;
+      margin: 10px 0 6px;
     }
-    .note strong { color: var(--accent); font-weight: 500; }
+    .or-line { flex: 1; border: none; border-top: 1px solid #dbdbdb; }
+    .or-text { font-size: 13px; font-weight: 600; color: #8e8e8e; letter-spacing: 0.5px; }
+
+    /* ── Error ── */
+    #errorMsg {
+      font-size: 13px;
+      color: #ed4956;
+      min-height: 18px;
+      text-align: center;
+      margin-bottom: 4px;
+      width: 100%;
+    }
+
+    /* ── Forgot ── */
+    .forgot {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      color: #262626;
+      margin-top: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .forgot:hover { text-decoration: underline; }
+
+    /* ── Footer card ── */
+    .footer-card {
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      border-radius: 1px;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .footer-card span { color: #262626; }
+    .footer-card .link { color: #0095f6; font-weight: 600; cursor: pointer; }
+
+    /* ── App badges ── */
+    .app-row { text-align: center; margin-top: 4px; }
+    .app-label { font-size: 14px; color: #262626; display: block; margin-bottom: 10px; }
+    .badges { display: flex; justify-content: center; gap: 8px; }
+    .badge {
+      height: 40px;
+      background: #262626;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 7px;
+      min-width: 120px;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .badge:hover { opacity: 0.82; }
+    .badge-text { color: #fff; font-size: 11px; line-height: 1.3; }
+    .badge-text strong { font-size: 14px; font-weight: 600; display: block; }
+
+    /* ── Meta footer ── */
+    .meta {
+      text-align: center;
+      font-size: 12px;
+      color: #737373;
+      margin-top: 16px;
+      line-height: 1.8;
+    }
+    .meta a { color: #737373; text-decoration: none; }
+    .meta a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
+
 <div class="wrap">
+
+  <!-- Main card -->
   <div class="card">
 
     <div class="logo">
@@ -217,24 +212,56 @@
       <span class="logo-text">TeamChat</span>
     </div>
 
-    <h1>Welcome back</h1>
-    <p class="sub">Sign in with your team credentials</p>
-
-    <form id="loginForm">
+    <form id="loginForm" style="width:100%">
       <div class="field">
-        <label for="userId">User ID</label>
-        <input id="userId" type="text" placeholder="e.g. john123" autocomplete="username" required>
+        <input id="userId" type="text" placeholder="User ID" autocomplete="username" required>
       </div>
       <div class="field">
-        <label for="password">Password</label>
-        <input id="password" type="password" placeholder="Your password" autocomplete="current-password" required>
+        <input id="password" type="password" placeholder="Password" autocomplete="current-password" required>
       </div>
-      <div id="errorMsg" class="error"></div>
-      <button class="btn" type="submit" id="loginBtn">Sign In</button>
+      <div id="errorMsg"></div>
+      <button class="btn" type="submit" id="loginBtn">Log in</button>
     </form>
 
-    <p class="note">Access managed by your admin via <strong>Google Sheet</strong></p>
+    <div class="or-row">
+      <hr class="or-line">
+      <span class="or-text">OR</span>
+      <hr class="or-line">
+    </div>
+
+    <p style="font-size:13px;color:#8e8e8e;margin:2px 0 2px;text-align:center;">
+      Access managed by your admin via <strong style="color:#262626;font-weight:600;">Google Sheet</strong>
+    </p>
+
+    <a class="forgot" href="#">Forgot password?</a>
   </div>
+
+  <!-- Sign-up card -->
+  <div class="footer-card">
+    <span>Don't have an account? <span class="link">Contact your admin</span></span>
+  </div>
+
+  <!-- App badges -->
+  <div class="app-row">
+    <span class="app-label">Get the app.</span>
+    <div class="badges">
+      <div class="badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.18 1.27-2.16 3.8.03 3.02 2.65 4.03 2.68 4.04l-.07.28zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div class="badge-text"><span style="font-size:9px;opacity:.8;">Download on the</span><strong>App Store</strong></div>
+      </div>
+      <div class="badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76a2.5 2.5 0 0 0 2.56-.06l10.3-5.93-2.68-2.68-10.18 8.67zM.47 1.1A2.24 2.24 0 0 0 0 2.5v19a2.24 2.24 0 0 0 .47 1.4l.07.07 10.64-10.64v-.24L.54 1.04l-.07.06zM21.3 10.58l-2.94-1.69-2.98 2.98 2.98 2.98 2.97-1.71c.85-.49.85-1.28-.03-1.56zM3.18.24l10.3 5.93-2.68 2.68L.62.18A2.5 2.5 0 0 1 3.18.24z"/></svg>
+        <div class="badge-text"><span style="font-size:9px;opacity:.8;">Get it on</span><strong>Google Play</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meta footer -->
+  <div class="meta">
+    <a href="#">About</a> · <a href="#">Help</a> · <a href="#">Privacy</a> · <a href="#">Terms</a><br>
+    © 2025 TeamChat
+  </div>
+
 </div>
 
 <script src="js/config.js"></script>
